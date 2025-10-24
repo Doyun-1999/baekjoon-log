@@ -1,20 +1,17 @@
-N, M = map(int,input().split()) # N: 입국심사대의 개수 , M: 사람 수
+N, M = map(int,input().split()) # 심사대 개수 N, 심사 받는 사람 수 M
 times = [int(input()) for _ in range(N)]
- 
-# 이진 탐색을 위한 left와 right 설정
-left, right = min(times), max(times) * M
- 
-while left <= right:
-    mid = (left + right) // 2
-    
-    # mid 시간동안 심사할 수 있는 총 사람 수 계산
-    total_people = sum(mid // time for time in times)
-    
-    # 모든 사람을 심사할 수 있는 경우
-    if total_people >= M:
-        answer = mid
-        right = mid - 1
-    # 모든 사람을 심사할 수 없는 경우
+
+start = min(times) # 심사받는 최소 시간, 동시에 들어갈 수 있기떄문에 인원수만큼 곱하지않고 그냥 찐! 최소시간으로 탐색
+end = max(times) * M # 심사받는 최대 시간
+answer = 0
+
+while start<=end:
+    mid = (start+end)//2 # 시간이 늘어날 수록 심사받을 수 있는 사람 수가 늘어남!
+    p = sum(mid//time for time in times) # 심사받을 수 있는 사람 수
+    if p < M:
+        start = mid + 1 # 지금 시간에는 target보다 심사를 못받아!! -> 시간을 늘리자 start +
     else:
-        left = mid + 1
+        end = mid - 1
+        answer = mid
+        
 print(answer)
