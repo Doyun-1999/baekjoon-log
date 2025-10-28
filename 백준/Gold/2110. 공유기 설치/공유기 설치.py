@@ -1,27 +1,24 @@
-# 딱 봐도 Greedy 냄새가남 -> 가장 인접한 두 공유기 사이의 거리를 최대로
-# lst를 정렬하는 것 부터 시작하자.
-N,C = map(int,input().split())
-lst = [int(input()) for _ in range(N)]
-lst.sort()
+N, C = map(int,input().split())
+locations = [int(input()) for _ in range(N)]
 
-s = 1 # 두 점의 최소거리
-e = lst[-1] - lst[0] # 두 점의 최대거리
+locations.sort() # x좌표에 정렬하기 위해 sort
+start = 1 # 두 공유기 사이의 최소거리
+end = locations[-1] - locations[0] # 두 공유기 사이의 최대거리
+answer = 0
 
-while s<=e:
-    mid = (s+e)//2
-    dis, cnt = 0, 1
+while start <= end:
+    mid = (start+end)//2 # 중간지점 거리
+    cnt, distance = 1, 0 
     
     for i in range(1,N):
-        dis += lst[i] - lst[i-1]
-        if dis >= mid:
-            cnt += 1
-            dis = 0
-    if cnt >= C:
-        s = mid + 1
-        ans = mid
+        distance += locations[i] - locations[i-1] # 두 점사이의 거리를 누적함 -> 총 길이가 누적되는 중
+        if distance >= mid: # mid 값보다 더 크게
+            cnt += 1 # 공유기 설치!
+            distance = 0
+    if cnt >= C: # mid 간격으로 공유기 설치가 되는경우!
+        start = mid + 1 # Mid 값을 올려보자 -> 더 먼거리도 가능한지 반복
+        answer = mid # 일단 최대값 저장
     else:
-        e = mid -1
-print(ans)
-        
-            
-    
+        end = mid - 1 # mid 간격으로 공유기 설치가 안되므로 -> Mid 값 낮추기!
+                
+print(answer)   
